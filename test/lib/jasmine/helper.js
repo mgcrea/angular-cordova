@@ -16,11 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-// afterEach(function() {
-//     document.getElementById('stage').innerHTML = '';
-// });
+
+beforeEach(function() {
+  helper.createStage();
+})
+
+afterEach(function() {
+  document.getElementById('stage').innerHTML = '';
+});
 
 var helper = {
+    createStage: function() {
+       var el = document.createElement("div");
+       el.id = 'stage';
+       document.body.appendChild(el);
+    },
     trigger: function(obj, name) {
         var e = document.createEvent('Event');
         e.initEvent(name, true, true);

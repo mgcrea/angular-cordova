@@ -1,0 +1,16 @@
+{
+  "launchers": {
+    "iOS": {
+      "command": "ios-browser http://localhost:7357"
+    }
+  },
+  "test_page": "test/suite.html",
+  "src_files": [
+    "src/common.js",
+    "test/unit/*Spec.js"
+  ],
+  "serve_files": [
+    "*.js",
+    "*.css"
+  ]
+}

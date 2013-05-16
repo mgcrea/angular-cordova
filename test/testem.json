@@ -1,0 +1,18 @@
+{
+  "framework": "jasmine",
+  "launchers": {
+    "iOS": {
+      "command": "ios-browser http://localhost:7357"
+    }
+  },
+  "src_files": [
+    "test/lib/cordova-2.7.0.js",
+    "test/lib/jasmine/async.js",
+    "test/lib/jasmine/cordova.js",
+    "test/lib/jquery.js",
+    "test/lib/angular/angular.js",
+    "test/lib/angular/angular-mocks.js",
+    "src/common.js",
+    "test/unit/*Spec.js"
+  ]
+}
