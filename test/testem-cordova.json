@@ -1,10 +1,10 @@
 {
   "launchers": {
-    "iOS": {
+    "ios": {
       "command": "ios-browser http://localhost:7357"
     }
   },
-  "test_page": "test/suite.html",
+  "test_page": "test/testem-cordova.html",
   "src_files": [
     "src/common.js",
     "test/unit/*Spec.js"

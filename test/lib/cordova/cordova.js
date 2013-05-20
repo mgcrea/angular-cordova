@@ -6390,7 +6390,7 @@ require('cordova/channel').onNativeReady.fire();
     }
 
 
-    // // Try to XHR the cordova_plugins.json file asynchronously.
+    // Try to XHR the cordova_plugins.json file asynchronously.
     // try { // we commented we were going to try, so let us actually try and catch
     //     var xhr = new context.XMLHttpRequest();
     //     xhr.onload = function() {
@@ -6412,6 +6412,7 @@ require('cordova/channel').onNativeReady.fire();
     // catch(err){
     //     finishPluginLoading();
     // }
+    finishPluginLoading();
 }(window));
 
 

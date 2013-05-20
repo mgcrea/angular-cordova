@@ -11,16 +11,12 @@ files = [
   // MOCHA,
   // MOCHA_ADAPTER,
   JASMINE,
-  'test/lib/jasmine/async.js',
+  'test/lib/jasmine/jasmine-async.js',
   JASMINE_ADAPTER,
 
-  // '/Users/olivier/Dropbox/Developer/cordova/node-ios-browser/browser/build/Browser.app/wwwcordova-2.7.0.js',
-  'test/lib/cordova-2.7.0.js',
-  'test/lib/jasmine/cordova.js',
-  'test/lib/jasmine/helper.js',
-
+  'test/lib/cordova/cordova.js',
   'test/lib/angular/angular.js',
-  // 'test/lib/angular/angular-mocks.js',
+  'test/lib/angular/angular-mocks.js',
   'src/common.js',
   'test/unit/*Spec.js'
 ];
