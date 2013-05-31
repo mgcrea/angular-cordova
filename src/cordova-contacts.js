@@ -12,16 +12,11 @@ angular.module('cordova.contacts', ['cordova'])
       console.warn('$contacts.save', contact);
 
       var deviceContact = contacts.create(contact);
-      var deferred = $q.defer();
 
-      // Mock
-      if(!angular.$deviceready) {
-        console.warn('!angular.$deviceready');
-        $timeout(function() {
-          deferred.resolve(contact);
-        });
-        return deferred.promise;
-      }
+      // Mock contacts
+      if(!$cordova.$deviceready) return $q.when(deviceContact);
+
+      var deferred = $q.defer();
 
       deviceContact.save(function onSaveSuccess(contact) {
         console.warn('$contacts.save >', contact);
@@ -45,16 +40,11 @@ angular.module('cordova.contacts', ['cordova'])
       var fields = options.fields || ['id', 'displayName'];
       delete options.fields;
 
-      var deferred = $q.defer();
 
-      // Mock
-      if(!angular.$deviceready) {
-        console.warn('!angular.$deviceready');
-        $timeout(function() {
-          deferred.resolve([]);
-        });
-        return deferred.promise;
-      }
+      // Mock contacts
+      if(!$cordova.$deviceready) return $q.when([]);
+
+      var deferred = $q.defer();
 
       contactGroups.find(fields, options, function onFindSuccess(contacts) {
         console.warn('$contacts.find >', contacts);

@@ -26,13 +26,18 @@ angular.module('cordova', [])
       return deferred.promise;
     };
 
+    this.mock = function() {
+      var deferred = $q.defer();
+      return deferred.promise;
+    }
+
   })
 
   .run(function($cordova) {
 
-    angular.$deviceready = false;
+    $cordova.$deviceready = false;
     document.addEventListener('deviceready', function() {
-      angular.$deviceready = true;
+      $cordova.$deviceready = true;
     }, false);
 
     var userAgent = navigator.userAgent.toLowerCase();
