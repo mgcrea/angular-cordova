@@ -1,2 +1,7 @@
 .DS_Store
+npm-debug.log
 *.sublime-*
+test/coverage
+components/
+node_modules/
+!.gitignore

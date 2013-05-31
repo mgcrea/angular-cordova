@@ -1,0 +1,14 @@
+{
+  "name": "angular-cordova",
+  "version": "0.0.1",
+  "main": "src/angular-cordova.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ],
+  "dependencies": {
+    "angular": "~1.0.7",
+    "cordova": "~2.7.0"
+  }
+}
