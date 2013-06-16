@@ -51,7 +51,7 @@ angular.module('cordova.pushNotification', ['cordova'])
 
   .run(function($cordova, $pushNotification) {
 
-    $cordova.instance.addConstructor(function() {
+    $cordova.$cordova.addConstructor(function() {
       if(!window.plugins) window.plugins = {};
       window.plugins.pushNotification = $pushNotification;
     });
