@@ -14,7 +14,7 @@ angular.module('cordova.contacts', ['cordova'])
       var deviceContact = contacts.create(contact);
 
       // Mock contacts
-      if(!$cordova.$deviceready) return $q.when(deviceContact);
+      if(!$cordova.isReady()) return $cordova.mock(deviceContact, 100);
 
       var deferred = $q.defer();
 
@@ -40,12 +40,10 @@ angular.module('cordova.contacts', ['cordova'])
       var fields = options.fields || ['id', 'displayName'];
       delete options.fields;
 
-
       // Mock contacts
-      if(!$cordova.$deviceready) return $q.when([]);
+      if(!$cordova.isReady()) return $cordova.mock([], 50);
 
       var deferred = $q.defer();
-
       contactGroups.find(fields, options, function onFindSuccess(contacts) {
         console.warn('$contacts.find >', contacts);
         $timeout(function() {

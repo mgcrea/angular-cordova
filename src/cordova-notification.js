@@ -12,7 +12,7 @@ angular.module('cordova.notification', ['cordova'])
      * @param {String} buttonLabel          Label of the close button (default: OK)
      */
     this.alert = function(message, title, buttonLabel) {
-      if(!$cordova.$deviceready) return $q.when($window.alert(message));
+      if(!$cordova.isReady()) return $q.when($window.alert((title ? title + '\n' : '') + message));
       return $cordova.exec('Notification', 'alert', [message || '', title || 'Alert', buttonLabel || 'OK']);
     };
 
@@ -25,7 +25,7 @@ angular.module('cordova.notification', ['cordova'])
      * @param {Array} buttonLabels          Array of the labels of the buttons (default: ['OK', 'Cancel'])
      */
     this.confirm = function(message, title, buttonLabels) {
-      if(!$cordova.$deviceready) return $q.when($window.confirm(message));
+      if(!$cordova.isReady()) return $q.when($window.confirm(message));
       return $cordova.exec('Notification', 'confirm', [message || '', title || 'Confirm', buttonLabels || ['OK', 'Cancel']]);
     };
 
@@ -40,7 +40,7 @@ angular.module('cordova.notification', ['cordova'])
      * @param {Array} buttonLabels          Array of strings for the button labels (default: ['OK','Cancel'])
      */
     this.prompt = function(message, title, buttonLabels) {
-      if(!$cordova.$deviceready) return $q.when($window.prompt(message));
+      if(!$cordova.isReady()) return $q.when($window.prompt(message));
       return $cordova.exec('Notification', 'prompt', [message || '', title || 'Prompt', buttonLabels || ['OK', 'Cancel']]);
     };
 
@@ -50,7 +50,6 @@ angular.module('cordova.notification', ['cordova'])
      * @param {Integer} mills       The number of milliseconds to vibrate for.
      */
     this.vibrate = function(mills) {
-      if(!$cordova.$deviceready) return $q.when(false);
       return $cordova.exec('Notification', 'vibrate', [mills]);
     };
 
@@ -61,7 +60,6 @@ angular.module('cordova.notification', ['cordova'])
      * @param {Integer} count       The number of beeps.
      */
     this.beep = function(count) {
-      if(!$cordova.$deviceready) return $q.when(false);
       return $cordova.exec('Notification', 'beep', [count]);
     };
 

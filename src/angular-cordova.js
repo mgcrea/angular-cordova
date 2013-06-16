@@ -2,9 +2,10 @@
 
 angular.module('cordova', [])
 
-  .service('$cordova', function($window, $q) {
+  .service('$cordova', function($window, $rootScope, $q, $timeout) {
 
-    var cordova = this.instance = $window.cordova;
+    this.$cordova = $window.cordova || {};
+    this.$device = $window.device || {available: false};
 
     this.install = function(platform) {
       var js = document.createElement('script');
@@ -15,36 +16,40 @@ angular.module('cordova', [])
       s.parentNode.insertBefore(js, s);
     };
 
+    this.splashscreen = {
+      show: function() {
+        navigator.splashscreen && navigator.splashscreen.show();
+      },
+      hide: function() {
+        navigator.splashscreen && navigator.splashscreen.hide();
+      }
+    };
+
+    this.isReady = function() {
+      return !!this.$device.available;
+    };
+
     this.exec = function(plugin, action, args) {
+      if(!this.isReady()) return $q.when(false);
       var deferred = $q.defer();
-      if(!cordova || ! cordova.exec) return;
-      cordova.exec(function onSuccess(res) {
-        deferred.resolve(res);
+      this.$cordova.exec(function onSuccess(res) {
+        $rootScope.$apply(function() {
+          deferred.resolve(res);
+        });
       }, function onError(err) {
-        deferred.reject(err);
-      }, plugin, action, args);
+        $rootScope.$apply(function() {
+          deferred.reject(err);
+        });
+      }, plugin, action, args || []);
       return deferred.promise;
     };
 
-    this.mock = function() {
+    this.mock = function(resolve, delay) {
       var deferred = $q.defer();
+      $timeout(function() {
+        deferred.resolve(resolve);
+      }, delay || 0);
       return deferred.promise;
-    }
-
-  })
-
-  .run(function($cordova) {
-
-    $cordova.$deviceready = false;
-    document.addEventListener('deviceready', function() {
-      $cordova.$deviceready = true;
-    }, false);
-
-    var userAgent = navigator.userAgent.toLowerCase();
-
-    if(/(ipad|iphone)/.test(userAgent)) {
-      // $cordova.install('ios');
-    } else {
-    }
+    };
 
   });
