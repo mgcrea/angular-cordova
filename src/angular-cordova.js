@@ -2,13 +2,11 @@
 
 angular.module('cordova', [])
 
-  .service('$cordova', function($window, $rootScope, $q, $timeout) {
+  .service('$cordova', function($window, $rootScope, $location, $q, $timeout) {
 
-    this.$cordova = $window.cordova || {};
-    this.$device = $window.device;
-    this.isReady = function() {
-      return this.$device && this.$device.available;
-    };
+    var self = this;
+    this.cordova = $window.cordova || {};
+    this.device = $window.device;
 
     var deferredReady = $q.defer();
     this.$ready = deferredReady.promise;
@@ -28,17 +26,20 @@ angular.module('cordova', [])
       s.parentNode.insertBefore(js, s);
     };
 
+    this.isReady = function() {
+      return this.device && this.device.available;
+    };
+
     this.exec = function(plugin, action, args) {
-      var self;
-      return this.$ready.then(function() {
+      return $q.when(this.$ready, function() {
         if(!self.isReady()) return false;
         var deferred = $q.defer();
-        this.$cordova.exec(function onSuccess(res) {
-          $rootScope.$apply(function() {
+        self.cordova.exec(function onSuccess(res) {
+          $timeout(function() {
             deferred.resolve(res);
           });
         }, function onError(err) {
-          $rootScope.$apply(function() {
+          $timeout(function() {
             deferred.reject(err);
           });
         }, plugin, action, args || []);
@@ -52,6 +53,23 @@ angular.module('cordova', [])
         deferred.resolve(resolve);
       }, delay || 0);
       return deferred.promise;
+    };
+
+    this.registerPlugin = function(name, plugin) {
+      if(!angular.isFunction(this.cordova.addConstructor)) return false;
+      this.cordova.addConstructor(function() {
+        if(!window.plugins) window.plugins = {};
+        window.plugins[name] = plugin;
+      });
+    };
+
+    this.handleOpenURL = function(scheme, callback) {
+      $window.handleOpenURL = function(url) {
+        $timeout(function() {
+          $location.path(url.replace(scheme, '/'));
+          if(angular.isFunction(callback)) callback.call(null, url);
+        });
+      };
     };
 
   });

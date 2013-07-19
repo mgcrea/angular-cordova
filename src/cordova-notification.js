@@ -41,7 +41,11 @@ angular.module('cordova.notification', ['cordova'])
      */
     this.prompt = function(message, title, buttonLabels) {
       if(!$cordova.isReady()) return $q.when($window.prompt(message));
-      return $cordova.exec('Notification', 'prompt', [message || '', title || 'Prompt', buttonLabels || ['OK', 'Cancel']]);
+      return $cordova.exec('Notification', 'prompt', [message || '', title || 'Prompt', buttonLabels || ['OK', 'Cancel']])
+      .then(function(res) {
+        if(res && res.buttonIndex === 2) throw 'cancelled';
+        return res.input1 || res;
+      });
     };
 
     /**

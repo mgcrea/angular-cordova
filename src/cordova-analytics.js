@@ -4,10 +4,15 @@ angular.module('cordova.analytics', ['cordova'])
 
   .service('$analytics', function($cordova, $q) {
 
+    var deferredReady = $q.defer();
+    this.$ready = deferredReady.promise;
+
     // id = the GA account ID of the form 'UA-00000000-0'
     // period = the minimum interval for transmitting tracking events if any exist in the queue
     this.init = function(id, period) {
-      return $cordova.exec('GAPlugin', 'initGA', [id, period || 10]);
+      var promise = $cordova.exec('GAPlugin', 'initGA', [id, period || 10]);
+      deferredReady.resolve(promise);
+      return promise;
     };
 
     // category = The event category. This parameter is required to be non-empty.
@@ -15,22 +20,30 @@ angular.module('cordova.analytics', ['cordova'])
     // eventLabel = The event label. This parameter may be a blank string to indicate no label.
     // eventValue = The event value. This parameter may be -1 to indicate no value.
     this.trackEvent = function(category, eventAction, eventLabel, eventValue) {
-      return $cordova.exec('GAPlugin', 'trackEvent', [category, eventAction, eventLabel || '', eventValue || -1]);
+      return this.$ready.then(function() {
+        return $cordova.exec('GAPlugin', 'trackEvent', [category, eventAction, eventLabel || '', eventValue || -1]);
+      });
     };
 
     // url = the URL of the page view
     this.trackPage = function(url) {
-      return $cordova.exec('GAPlugin', 'trackPage', [url]);
+      return this.$ready.then(function() {
+        return $cordova.exec('GAPlugin', 'trackPage', [url]);
+      });
     };
 
     // index = the numerical index of the dimension to which this variable will be assigned (1 - 20)
     // value = the value of the variable you are logging
     this.setVariable = function(index, value) {
-      return $cordova.exec('GAPlugin', 'setVariable', [index, value]);
+      return this.$ready.then(function() {
+        return $cordova.exec('GAPlugin', 'setVariable', [index, value]);
+      });
     };
 
     this.destroy = function(index, value) {
-      return $cordova.exec('GAPlugin', 'exitGA', []);
+      return this.$ready.then(function() {
+        $cordova.exec('GAPlugin', 'exitGA', []);
+      });
     };
 
   });
