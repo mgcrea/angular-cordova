@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cordova.splashscreen', ['cordova'])
+angular.module('mgcrea.ngCordova.splashscreen', ['mgcrea.ngCordova.exec'])
 
   .service('$splashscreen', function($cordova) {
 
